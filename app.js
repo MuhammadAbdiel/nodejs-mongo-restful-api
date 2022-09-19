@@ -1,29 +1,27 @@
 const express = require("express");
-const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const db = require("./utils/db");
 require("dotenv/config");
+
+// Import Router
+const postsRoute = require("./routes/posts");
 
 const app = express();
 const port = 3000;
 
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
+app.use("/posts", postsRoute);
+
+// Routes
 app.get("/", (req, res) => {
-  res.send("Hello world");
+  res.redirect("/posts");
 });
-
-// Connect to DB
-async function connectToDb() {
-  try {
-    await mongoose.connect(
-      `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.poo9ipk.mongodb.net/test`
-    );
-  } catch (e) {
-    console.log(e);
-  } finally {
-    console.log("Connected to DB!");
-  }
-}
-
-connectToDb();
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Example app listening on http://localhost:${port}`);
 });
+
+db.connectToDb();
