@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const db = require("./utils/db");
+const { connectToDb } = require("./utils/db");
 require("dotenv/config");
 
 // Import Router
@@ -24,4 +24,4 @@ app.listen(port, () => {
   console.log(`Example app listening on http://localhost:${port}`);
 });
 
-db.connectToDb();
+connectToDb();
