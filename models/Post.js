@@ -5,6 +5,12 @@ const PostSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  category: {
+    name: {
+      type: String,
+      required: true,
+    },
+  },
   author: {
     type: String,
     required: true,

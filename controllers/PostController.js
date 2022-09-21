@@ -1,4 +1,5 @@
 const Post = require("../models/Post");
+const Category = require("../models/Category");
 
 async function getAllPosts(req, res) {
   try {
@@ -12,14 +13,24 @@ async function getAllPosts(req, res) {
 async function storePost(req, res) {
   const post = new Post({
     title: req.body.title,
+    category: {
+      name: req.body.category.name,
+    },
     author: req.body.author,
     description: req.body.description,
   });
 
   // * Async Await
   try {
-    const savedPost = await post.save();
-    res.json(savedPost);
+    const categoryName = await Category.findOne({
+      name: req.body.category.name,
+    });
+    if (categoryName) {
+      const savedPost = await post.save();
+      res.json(savedPost);
+    } else {
+      res.json({ message: "Category name not found!" });
+    }
   } catch (e) {
     res.json({ message: e });
   }
@@ -51,15 +62,25 @@ async function deletePostById(req, res) {
 
 async function updatePostById(req, res) {
   try {
-    const updatePostById = await Post.updateOne(
-      { _id: req.params.postId },
-      {
-        title: req.body.title,
-        author: req.body.author,
-        description: req.body.description,
-      }
-    );
-    res.json(updatePostById);
+    const categoryName = await Category.findOne({
+      name: req.body.category.name,
+    });
+    if (categoryName) {
+      const updatePostById = await Post.updateOne(
+        { _id: req.params.postId },
+        {
+          title: req.body.title,
+          category: {
+            name: req.body.category.name,
+          },
+          author: req.body.author,
+          description: req.body.description,
+        }
+      );
+      res.json(updatePostById);
+    } else {
+      res.json({ message: "Category name not found!" });
+    }
   } catch (error) {
     res.json({ message: error });
   }
