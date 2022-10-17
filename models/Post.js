@@ -8,7 +8,7 @@ const PostSchema = mongoose.Schema({
   category: {
     name: {
       type: String,
-      required: true,
+      default: undefined,
     },
   },
   author: {
