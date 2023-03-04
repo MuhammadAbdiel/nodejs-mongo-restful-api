@@ -7,6 +7,7 @@ require("dotenv/config");
 // Import Router
 const postsRoute = require("./routes/posts");
 const categoriesRoute = require("./routes/categories");
+const authRoute = require("./routes/auth");
 
 const app = express();
 const port = 3000;
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use("/posts", postsRoute);
 app.use("/categories", categoriesRoute);
+app.use("/user", authRoute);
 
 // Routes
 app.get("/", (req, res) => {
